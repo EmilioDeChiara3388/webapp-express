@@ -8,8 +8,21 @@ const PORT = process.env.PORT
 server.get("/", (req, res) => {
     connection.query(`SELECT * FROM movies`, (err, results) => {
         if (err) return res.status(500).json({ err: err })
+
         res.json({
             movies: results
+        })
+    })
+})
+
+server.get("/:id", (req, res) => {
+    const id = req.params.id
+    connection.query(`SELECT * FROM movies WHERE id = ?`, [id], (err, results) => {
+        if (err) return res.status(500).json({ err: err })
+        if (results.length === 0) return res.status(404).json({ err: "Film non trovato" })
+
+        res.json({
+            movie: results[0]
         })
     })
 })
