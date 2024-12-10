@@ -21,8 +21,14 @@ server.get("/:id", (req, res) => {
         if (err) return res.status(500).json({ err: err })
         if (results.length === 0) return res.status(404).json({ err: "Film non trovato" })
 
-        res.json({
-            movie: results[0]
+        connection.query(`SELECT * FROM reviews WHERE movie_id = ?`, [id], (err, reviewsResults) => {
+            if (err) return res.status(500).json({ err: err })
+
+            const movie = {
+                ...results[0],
+                reviews: reviewsResults
+            }
+            res.json(movie)
         })
     })
 })
