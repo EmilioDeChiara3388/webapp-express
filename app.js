@@ -6,9 +6,11 @@ const cors = require('cors');
 const HOST = process.env.HOST
 const PORT = process.env.PORT
 
-server.use("/movies", movieRouter)
-
 server.use(cors())
+
+server.use("/api/movies", movieRouter)
+
+
 
 server.listen(PORT, () => {
     console.log(`Server is listening on port ${HOST}:${PORT}`);
