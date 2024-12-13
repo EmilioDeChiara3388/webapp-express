@@ -28,7 +28,19 @@ function show(req, res) {
     })
 }
 
+function newReview(req, res) {
+    const movie_id = Number(req.params.id)
+    const { name, vote, text } = req.body
+    const time = new Date()
+
+    connection.query("INSERT INTO `reviews` SET movie_id=?, name=?, vote=?, text=?,   created_at=?", [movie_id, name, vote, text, time], (err, results) => {
+        if (err) return res.status(500).json({ error: err })
+        return res.status(201).json({ success: true })
+    })
+}
+
 module.exports = {
     index,
-    show
+    show,
+    newReview
 }
