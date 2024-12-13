@@ -7,6 +7,7 @@ const HOST = process.env.HOST
 const PORT = process.env.PORT
 
 server.use(cors())
+server.use(express.json())
 
 server.use("/api/movies", movieRouter)
 
