@@ -16,7 +16,7 @@ function show(req, res) {
         if (err) return res.status(500).json({ err: err })
         if (results.length === 0) return res.status(404).json({ err: "Film non trovato" })
 
-        connection.query(`SELECT * FROM reviews WHERE movie_id = ?`, [id], (err, reviewsResults) => {
+        connection.query(`SELECT * FROM reviews WHERE movie_id = ? ORDER BY id DESC`, [id], (err, reviewsResults) => {
             if (err) return res.status(500).json({ err: err })
 
             const movie = {
@@ -33,7 +33,9 @@ function newReview(req, res) {
     const { name, vote, text } = req.body
     const time = new Date()
 
-    connection.query("INSERT INTO `reviews` SET movie_id=?, name=?, vote=?, text=?,   created_at=?", [movie_id, name, vote, text, time], (err, results) => {
+    const sql = "INSERT INTO `reviews` SET movie_id=?, name=?, vote=?, text=?, created_at=?"
+
+    connection.query(sql, [movie_id, name, vote, text, time], (err, result) => {
         if (err) return res.status(500).json({ error: err })
         return res.status(201).json({ success: true })
     })
